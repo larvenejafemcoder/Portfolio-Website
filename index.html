@@ -1,13 +1,563 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <!-- <link rel="icon" type="image/svg+xml" href="/" /> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Moncy Yohannan - Creative Developer | Designer</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gia Khang — Software Engineer & Systems Architect</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="ambient-scene"></div>
+
+  <div id="loading-screen">
+    <div class="loading-header">
+      <a href="#" class="loader-title">Gia Khang</a>
+      <div class="loaderGame" id="loaderGame">
+        <div class="loaderGame-container">
+          <div class="loaderGame-in" id="loaderGameIn"></div>
+          <div class="loaderGame-ball"></div>
+        </div>
+      </div>
+    </div>
+    <div class="loading-screen-inner">
+      <div class="loading-marquee">
+        <div class="marquee-track" id="marqueeTrack">
+          <span>Software Engineer</span>
+          <span>Systems Architect</span>
+          <span>Software Engineer</span>
+          <span>Systems Architect</span>
+        </div>
+      </div>
+      <div class="loading-wrap" id="loadingWrap">
+        <div class="loading-hover"></div>
+        <div class="loading-button" id="loadingButton">
+          <div class="loading-container">
+            <div class="loading-content">
+              <div class="loading-content-in">Loading <span id="loadPercent">0%</span></div>
+            </div>
+            <div class="loading-box"></div>
+          </div>
+          <div class="loading-content2"><span>Welcome</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-body" id="mainBody">
+    <div id="smooth-wrapper">
+      <div id="smooth-content">
+
+        <div class="header" id="header">
+          <a href="#" class="navbar-title" data-cursor="disable">Gia Khang</a>
+          <a href="mailto:hello@giakhang.dev" class="navbar-connect" data-cursor="disable">hello@giakhang.dev</a>
+          <ul>
+            <li><a data-href="#about" href="#about"><div class="hover-link" data-cursor="disable"><div class="hover-in">ABOUT <div>ABOUT</div></div></div></a></li>
+            <li><a data-href="#work" href="#work"><div class="hover-link" data-cursor="disable"><div class="hover-in">WORK <div>WORK</div></div></div></a></li>
+            <li><a data-href="#contact" href="#contact"><div class="hover-link" data-cursor="disable"><div class="hover-in">CONTACT <div>CONTACT</div></div></div></a></li>
+          </ul>
+        </div>
+
+        <div class="landing-circle1"></div>
+        <div class="landing-circle2"></div>
+        <div class="nav-fade"></div>
+
+        <div class="icons-section" id="iconsSection">
+          <div class="social-icons" data-cursor="icons" id="social">
+            <span><a href="https://github.com" target="_blank">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            </a></span>
+            <span><a href="https://www.linkedin.com" target="_blank">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a></span>
+            <span><a href="https://x.com" target="_blank">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a></span>
+            <span><a href="https://www.instagram.com" target="_blank">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            </a></span>
+          </div>
+          <a class="resume-button" href="#">
+            <div class="hover-link" data-cursor="disable"><div class="hover-in">RESUME <div>RESUME</div></div></div>
+            <span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>
+          </a>
+        </div>
+
+        <section class="landing-section" id="landingDiv">
+          <div class="landing-overlay"></div>
+          <div class="landing-container">
+            <div class="landing-content-left">
+              <div class="landing-intro">
+                <h2 class="landing-greeting">Hello, I'm</h2>
+                <h1 class="landing-name">GIA<br><span>KHANG</span></h1>
+              </div>
+              <div class="landing-info">
+                <h3 class="landing-role-label">Software</h3>
+                <h2 class="landing-info-h2">
+                  <div class="landing-h2-1 landing-h2-info">Engineer</div>
+                  <div class="landing-h2-2 landing-h2-info-1">Systems</div>
+                </h2>
+                <h2>
+                  <div class="landing-h2-info">Systems</div>
+                  <div class="landing-h2-info-1">Engineer</div>
+                </h2>
+                <p class="landing-tagline">Building foundations. Architecting systems. Exploring the machine beneath the machine.</p>
+              </div>
+            </div>
+            <div class="landing-content-right"></div>
+          </div>
+        </section>
+
+        <section class="about-section section-container" id="about">
+          <div class="about-me">
+            <h3 class="title">About Me</h3>
+            <p class="para">Self-taught software engineer rebuilding foundations through C, C++, Linux, embedded systems, and cybersecurity. I don't just learn tools — I build a worldview around technology itself, treating every language and system like unlocking hidden firmware layers of culture and computation.</p>
+          </div>
+        </section>
+
+        <section class="whatIDO" id="whatIDO">
+          <div class="what-box">
+            <h2 class="title">W<span class="hat-h2">HAT</span><div>I<span class="do-h2"> DO</span></div></h2>
+          </div>
+          <div class="what-box">
+            <div class="what-box-in" id="whatBoxIn">
+              <div class="what-border2">
+                <svg width="100%"><line x1="0" y1="0" x2="0" y2="100%" stroke="white" stroke-width="2" stroke-dasharray="7,7"/><line x1="100%" y1="0" x2="100%" y2="100%" stroke="white" stroke-width="2" stroke-dasharray="7,7"/></svg>
+              </div>
+              <div class="what-content what-noTouch" data-index="0">
+                <div class="what-border1"><svg height="100%"><line x1="0" y1="0" x2="100%" y2="0" stroke="white" stroke-width="2" stroke-dasharray="6,6"/><line x1="0" y1="100%" x2="100%" y2="100%" stroke="white" stroke-width="2" stroke-dasharray="6,6"/></svg></div>
+                <div class="what-corner"></div>
+                <div class="what-content-in">
+                  <h3>DEVELOP</h3>
+                  <h4>Systems & Infrastructure</h4>
+                  <p>Building from source, understanding the machine beneath the machine. Low-level development with a focus on performance, security, and architectural depth.</p>
+                  <h5>Skillset & tools</h5>
+                  <div class="what-content-flex">
+                    <div class="what-tags">C</div>
+                    <div class="what-tags">C++</div>
+                    <div class="what-tags">Linux</div>
+                    <div class="what-tags">Embedded</div>
+                    <div class="what-tags">Cybersecurity</div>
+                    <div class="what-tags">Python</div>
+                    <div class="what-tags">Bash</div>
+                    <div class="what-tags">Zsh</div>
+                    <div class="what-tags">Arch Linux</div>
+                    <div class="what-tags">VM</div>
+                  </div>
+                  <div class="what-arrow"></div>
+                </div>
+              </div>
+              <div class="what-content what-noTouch" data-index="1">
+                <div class="what-border1"><svg height="100%"><line x1="0" y1="100%" x2="100%" y2="100%" stroke="white" stroke-width="2" stroke-dasharray="6,6"/></svg></div>
+                <div class="what-corner"></div>
+                <div class="what-content-in">
+                  <h3>ARCHITECT</h3>
+                  <h4>Systems Design & Automation</h4>
+                  <p>Designing resilient architectures, automating workflows, and crafting developer ecosystems that turn chaos into propulsion.</p>
+                  <h5>Skillset & tools</h5>
+                  <div class="what-content-flex">
+                    <div class="what-tags">System Design</div>
+                    <div class="what-tags">Automation</div>
+                    <div class="what-tags">Networking</div>
+                    <div class="what-tags">Infrastructure</div>
+                    <div class="what-tags">Dotfiles</div>
+                    <div class="what-tags">Configuration</div>
+                    <div class="what-tags">Scripting</div>
+                    <div class="what-tags">Astro</div>
+                  </div>
+                  <div class="what-arrow"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="career-section section-container" id="career">
+          <div class="career-container">
+            <h2>Path <span>&</span><br> foundation</h2>
+            <div class="career-info">
+              <div class="career-timeline"><div class="career-dot"></div></div>
+              <div class="career-info-box">
+                <div class="career-info-in">
+                  <div class="career-role"><h4>Self-Taught Engineer</h4><h5>Foundations Phase</h5></div>
+                  <h3>2023</h3>
+                </div>
+                <p>Began rebuilding from the ground up — C, C++, Linux internals, and the philosophy of understanding systems rather than just using them.</p>
+              </div>
+              <div class="career-info-box">
+                <div class="career-info-in">
+                  <div class="career-role"><h4>Open Source & Infra</h4><h5>Personal Labs</h5></div>
+                  <h3>2024</h3>
+                </div>
+                <p>Arch Linux dotfiles, Zsh ecosystem, VM testing environments, automation scripts, and experimental UI concepts — building a developer identity from first principles.</p>
+              </div>
+              <div class="career-info-box">
+                <div class="career-info-in">
+                  <div class="career-role"><h4>Systems Engineer</h4><h5>Evolving</h5></div>
+                  <h3>NOW</h3>
+                </div>
+                <p>Deepening expertise in embedded systems, cybersecurity, and multilingual computing — treating technology as a worldview, not a toolchain.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="work-section" id="work">
+          <div class="work-container section-container">
+            <h2>My <span>Work</span></h2>
+            <div class="work-flex" id="workFlex">
+              <div class="work-box"><div class="work-info"><div class="work-title"><h3>01</h3><div><h4>Arch Dotfiles</h4><p>Environment</p></div></div><h4>Tech stack</h4><p>C, Zsh, Python, Bash, GNU Stow</p></div><div class="work-image"><a class="work-image-in" href="#" data-cursor="disable"><div class="work-link"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></div><img src="/images/placeholder.webp" alt=""></a></div></div>
+              <div class="work-box"><div class="work-info"><div class="work-title"><h3>02</h3><div><h4>Zsh Ecosystem</h4><p>Shell</p></div></div><h4>Tech stack</h4><p>Zsh, Bash, Python, Tmux</p></div><div class="work-image"><a class="work-image-in" href="#" data-cursor="disable"><div class="work-link"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></div><img src="/images/placeholder.webp" alt=""></a></div></div>
+              <div class="work-box"><div class="work-info"><div class="work-title"><h3>03</h3><div><h4>Portfolio Site</h4><p>Web</p></div></div><h4>Tech stack</h4><p>HTML, CSS, JS, Three.js, GSAP</p></div><div class="work-image"><a class="work-image-in" href="#" data-cursor="disable"><div class="work-link"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></div><img src="/images/placeholder.webp" alt=""></a></div></div>
+              <div class="work-box"><div class="work-info"><div class="work-title"><h3>04</h3><div><h4>VM Testing Lab</h4><p>Infrastructure</p></div></div><h4>Tech stack</h4><p>Arch Linux, QEMU, KVM, Ansible</p></div><div class="work-image"><a class="work-image-in" href="#" data-cursor="disable"><div class="work-link"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></div><img src="/images/placeholder.webp" alt=""></a></div></div>
+              <div class="work-box"><div class="work-info"><div class="work-title"><h3>05</h3><div><h4>Cyber UI Concepts</h4><p>Experimental</p></div></div><h4>Tech stack</h4><p>Astro, CSS, Three.js, Neon Aesthetic</p></div><div class="work-image"><a class="work-image-in" href="#" data-cursor="disable"><div class="work-link"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></div><img src="/images/placeholder.webp" alt=""></a></div></div>
+              <div class="work-box"><div class="work-info"><div class="work-title"><h3>06</h3><div><h4>Security Tools</h4><p>Cybersecurity</p></div></div><h4>Tech stack</h4><p>C, Python, Bash, Wireshark, Nmap</p></div><div class="work-image"><a class="work-image-in" href="#" data-cursor="disable"><div class="work-link"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></div><img src="/images/placeholder.webp" alt=""></a></div></div>
+            </div>
+          </div>
+        </section>
+
+        <div class="techstack" id="techstack">
+          <h2>My Techstack</h2>
+          <div id="techCanvas"></div>
+        </div>
+
+        <section class="contact-section section-container" id="contact">
+          <div class="contact-container">
+            <h3>Connect</h3>
+            <div class="contact-flex">
+              <div class="contact-box">
+                <h4>Email</h4>
+                <p><a href="mailto:hello@giakhang.dev" data-cursor="disable">hello@giakhang.dev</a></p>
+                <h4>Signal</h4>
+                <p><a href="#" data-cursor="disable">Available on request</a></p>
+              </div>
+              <div class="contact-box">
+                <h4>Social</h4>
+                <a href="https://github.com/Larvene" target="_blank" data-cursor="disable" class="contact-social">Github <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></a>
+                <a href="https://www.linkedin.com/in/giakhang" target="_blank" data-cursor="disable" class="contact-social">Linkedin <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></a>
+                <a href="https://x.com/kernelghost" target="_blank" data-cursor="disable" class="contact-social">Twitter <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></a>
+                <a href="https://giakhang.dev" target="_blank" data-cursor="disable" class="contact-social">Website <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg></a>
+              </div>
+              <div class="contact-box">
+                <h2>Built from source <br> by <span>Gia Khang</span></h2>
+                <h5>&copy; 2024</h5>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <div class="cursor-main" id="cursorMain"></div>
+
+  <script src="app.js"></script>
+
+<!-- Three.js Globe -->
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+    }
+  }
+</script>
+
+<script type="module">
+  import * as THREE from 'three';
+
+  const container = document.createElement('div');
+  container.style.position = 'fixed';
+  container.style.top = '0';
+  container.style.left = '0';
+  container.style.width = '100%';
+  container.style.height = '100%';
+  container.style.pointerEvents = 'none';
+  container.style.zIndex = '1';
+  document.body.appendChild(container);
+
+  const scene = new THREE.Scene();
+
+  // ─── Camera ───
+  const isMobile = window.innerWidth < 768;
+  const camera = new THREE.PerspectiveCamera(
+    isMobile ? 50 : 40,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
+  camera.position.set(0, 0, isMobile ? 4 : 5.5);
+
+  // ─── Renderer ───
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.8;
+  container.appendChild(renderer.domElement);
+
+  // ─── Globe ───
+  const globeRadius = isMobile ? 1.2 : 1.6;
+  const globeGeo = new THREE.SphereGeometry(globeRadius, 80, 80);
+  const texLoader = new THREE.TextureLoader();
+  const earthMap = texLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
+  const cloudMap = texLoader.load('https://threejs.org/examples/textures/planets/earth_clouds_1024.png');
+
+  const globeMat = new THREE.MeshPhysicalMaterial({
+    map: earthMap,
+    roughness: 0.4,
+    metalness: 0.05,
+    clearcoat: 0.15,
+    clearcoatRoughness: 0.3,
+    envMapIntensity: 0.6,
+  });
+  const globe = new THREE.Mesh(globeGeo, globeMat);
+
+  // Position globe to the right side
+  const globeOffsetX = isMobile ? 0 : 2.0;
+  const globeOffsetY = isMobile ? -0.3 : -0.2;
+  globe.position.set(globeOffsetX, globeOffsetY, 0);
+  scene.add(globe);
+
+  // ─── Cloud layer ───
+  const cloudGeo = new THREE.SphereGeometry(globeRadius * 1.012, 80, 80);
+  const cloudMat = new THREE.MeshPhysicalMaterial({
+    map: cloudMap,
+    transparent: true,
+    opacity: 0.25,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    roughness: 1,
+    metalness: 0,
+  });
+  const clouds = new THREE.Mesh(cloudGeo, cloudMat);
+  clouds.position.copy(globe.position);
+  scene.add(clouds);
+
+  // ─── Atmosphere glow ───
+  const glowGeo = new THREE.SphereGeometry(globeRadius * 1.08, 48, 48);
+  const glowMat = new THREE.ShaderMaterial({
+    vertexShader: `
+      varying vec3 vNormal;
+      varying vec3 vPosition;
+      void main() {
+        vNormal = normalize(normalMatrix * normal);
+        vPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec3 vNormal;
+      varying vec3 vPosition;
+      void main() {
+        vec3 viewDir = normalize(-vPosition);
+        float rim = 1.0 - max(0.0, dot(viewDir, vNormal));
+        rim = pow(rim, 3.0);
+        vec3 color = mix(vec3(0.3, 0.5, 1.0), vec3(0.6, 0.3, 1.0), rim);
+        gl_FragColor = vec4(color, rim * 0.4);
+      }
+    `,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    side: THREE.FrontSide,
+  });
+  const glow = new THREE.Mesh(glowGeo, glowMat);
+  glow.position.copy(globe.position);
+  scene.add(glow);
+
+  // ─── Stars ───
+  const starsGeo = new THREE.BufferGeometry();
+  const starCount = 1500;
+  const starPos = new Float32Array(starCount * 3);
+  const starSizes = new Float32Array(starCount);
+  for (let i = 0; i < starCount; i++) {
+    starPos[i*3] = (Math.random() - 0.5) * 200;
+    starPos[i*3+1] = (Math.random() - 0.5) * 100;
+    starPos[i*3+2] = (Math.random() - 0.5) * 100 - 20;
+    starSizes[i] = 0.2 + Math.random() * 0.8;
+  }
+  starsGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+  starsGeo.setAttribute('size', new THREE.BufferAttribute(starSizes, 1));
+  const starsMat = new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 0.03 * (isMobile ? 1.5 : 1),
+    transparent: true,
+    opacity: 0.6,
+    blending: THREE.AdditiveBlending,
+    sizeAttenuation: true,
+  });
+  const stars = new THREE.Points(starsGeo, starsMat);
+  scene.add(stars);
+
+  // ─── Orbital ring ───
+  const ringGeo = new THREE.RingGeometry(globeRadius * 1.6, globeRadius * 1.75, 80);
+  const ringMat = new THREE.MeshBasicMaterial({
+    color: 0x6C47FF,
+    transparent: true,
+    opacity: 0.08,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+  });
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.position.copy(globe.position);
+  ring.rotation.x = 0.6;
+  ring.rotation.y = 0.3;
+  scene.add(ring);
+
+  const ring2Geo = new THREE.RingGeometry(globeRadius * 1.85, globeRadius * 1.95, 80);
+  const ring2Mat = new THREE.MeshBasicMaterial({
+    color: 0x00C9FF,
+    transparent: true,
+    opacity: 0.04,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+  });
+  const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
+  ring2.position.copy(globe.position);
+  ring2.rotation.x = -0.4;
+  ring2.rotation.y = 0.8;
+  scene.add(ring2);
+
+  // ─── Lighting ───
+  const ambient = new THREE.AmbientLight(0x222244, 0.4);
+  scene.add(ambient);
+
+  const keyLight = new THREE.DirectionalLight(0xffeedd, 1.8);
+  keyLight.position.set(5, 8, 6);
+  scene.add(keyLight);
+
+  const rimLight = new THREE.DirectionalLight(0x6C47FF, 1.2);
+  rimLight.position.set(-4, 2, -5);
+  scene.add(rimLight);
+
+  const coolRim = new THREE.DirectionalLight(0x00C9FF, 0.6);
+  coolRim.position.set(0, -3, -6);
+  scene.add(coolRim);
+
+  const fillLight = new THREE.DirectionalLight(0x4466aa, 0.3);
+  fillLight.position.set(-3, 0, 4);
+  scene.add(fillLight);
+
+  // ─── Mouse parallax vars ───
+  let mouseX = 0;
+  let mouseY = 0;
+  let targetMeshRotX = 0;
+  let targetMeshRotY = 0;
+  let currentMeshRotX = 0;
+  let currentMeshRotY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    targetMeshRotY = mouseX * 0.08;
+    targetMeshRotX = -mouseY * 0.05;
+  });
+
+  // ─── Scroll vars ───
+  let targetScrollRotY = 0;
+  let currentScrollRotY = 0;
+
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    targetScrollRotY = pct * Math.PI * 1.5;
+  });
+
+  // ─── Fog ───
+  scene.fog = new THREE.FogExp2(0x0A0C10, 0.008);
+
+  // ─── Animate ───
+  function animate() {
+    requestAnimationFrame(animate);
+
+    currentScrollRotY += (targetScrollRotY - currentScrollRotY) * 0.06;
+    currentMeshRotX += (targetMeshRotX - currentMeshRotX) * 0.04;
+    currentMeshRotY += (targetMeshRotY - currentMeshRotY) * 0.04;
+
+    globe.rotation.y = currentScrollRotY + currentMeshRotY;
+    globe.rotation.x = currentMeshRotX;
+    clouds.rotation.y = currentScrollRotY * 1.3 + currentMeshRotY + 0.003;
+    clouds.rotation.x = currentMeshRotX;
+
+    ring.rotation.z += 0.0008;
+    ring2.rotation.z -= 0.0005;
+    stars.rotation.y += 0.0003;
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // ─── Fade on scroll ───
+  const gsap = window.gsap;
+  const ScrollTrigger = window.ScrollTrigger;
+  if (gsap && ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.to(container, {
+      opacity: 0,
+      duration: 0.6,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: "#work",
+        start: "top 80%",
+        end: "top 40%",
+        scrub: true,
+      }
+    });
+    gsap.to(container, {
+      opacity: 1,
+      duration: 0.6,
+      ease: "power2.in",
+      scrollTrigger: {
+        trigger: "#contact",
+        start: "top 80%",
+        end: "top 40%",
+        scrub: true,
+      }
+    });
+  }
+
+  // ─── Resize ───
+  function onResize() {
+    const mob = window.innerWidth < 768;
+    const camZ = mob ? 4 : 5.5;
+    const fov = mob ? 50 : 40;
+    const gx = mob ? 0 : 2.0;
+    const gy = mob ? -0.3 : -0.2;
+    const gr = mob ? 1.2 : 1.6;
+
+    camera.fov = fov;
+    camera.position.z = camZ;
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    globe.position.set(gx, gy, 0);
+    clouds.position.set(gx, gy, 0);
+    glow.position.set(gx, gy, 0);
+    ring.position.set(gx, gy, 0);
+    ring2.position.set(gx, gy, 0);
+
+    if (Math.abs(globeGeo.parameters.radius - gr) > 0.01) {
+      const newGlobeGeo = new THREE.SphereGeometry(gr, 80, 80);
+      globe.geometry = newGlobeGeo;
+      const newCloudGeo = new THREE.SphereGeometry(gr * 1.012, 80, 80);
+      clouds.geometry = newCloudGeo;
+      const newGlowGeo = new THREE.SphereGeometry(gr * 1.08, 48, 48);
+      glow.geometry = newGlowGeo;
+      ring.geometry = new THREE.RingGeometry(gr * 1.6, gr * 1.75, 80);
+      ring2.geometry = new THREE.RingGeometry(gr * 1.85, gr * 1.95, 80);
+    }
+
+    starsMat.size = 0.03 * (mob ? 1.5 : 1);
+  }
+
+  window.addEventListener('resize', onResize);
+</script>
+</body>
 </html>

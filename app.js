@@ -1,4 +1,18 @@
 // ═══════════════════════════════════════════════════════
+// PERFORMANCE & ACCESSIBILITY UTILITIES
+// ═══════════════════════════════════════════════════════
+var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (isTouchDevice) {
+  document.body.classList.add('touch-device');
+}
+
+if (prefersReducedMotion) {
+  document.body.classList.add('reduced-motion');
+}
+
+// ═══════════════════════════════════════════════════════
 // LOADING SCREEN
 // ═══════════════════════════════════════════════════════
 (function initLoaderGame() {
@@ -58,11 +72,11 @@ loadingButton.addEventListener("click", async function () {
     document.body.style.overflowY = "auto";
     document.getElementById("mainBody").classList.add("main-active");
 
-    gsap.to("body", { backgroundColor: "#0b080c", duration: 0.5, delay: 1 });
+    gsap.to("body", { backgroundColor: "#0A0B10", duration: 0.8, delay: 0.5, ease: "power2.inOut" });
 
     initLandingAnimations();
     initScrollAnimations();
-  }, 900);
+  }, 1000);
 });
 
 loadingWrap.addEventListener("mousemove", function (e) {
@@ -113,12 +127,12 @@ document.querySelectorAll(".header ul a").forEach(function (elem) {
   container.appendChild(renderer.domElement);
 
   var COLORS = {
-    violet: new THREE.Color("#6C47FF"),
-    cyan: new THREE.Color("#00C9FF"),
+    violet: new THREE.Color("#7C5CFF"),
+    cyan: new THREE.Color("#5FA8FF"),
   };
 
   // Particles
-  var PARTICLE_COUNT = 300;
+  var PARTICLE_COUNT = 150;
   var particleGeo = new THREE.BufferGeometry();
   var positions = new Float32Array(PARTICLE_COUNT * 3);
   var colors = new Float32Array(PARTICLE_COUNT * 3);
@@ -136,17 +150,17 @@ document.querySelectorAll(".header ul a").forEach(function (elem) {
     colors[i3] = color.r;
     colors[i3 + 1] = color.g;
     colors[i3 + 2] = color.b;
-    sizes[i] = 1 + Math.random() * 3;
+    sizes[i] = 1 + Math.random() * 2;
   }
 
   particleGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
   particleGeo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
   var particleMat = new THREE.PointsMaterial({
-    size: 0.05,
+    size: 0.04,
     vertexColors: true,
     transparent: true,
-    opacity: 0.4,
+    opacity: 0.3,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
     sizeAttenuation: true,
@@ -158,42 +172,40 @@ document.querySelectorAll(".header ul a").forEach(function (elem) {
   // Primitives
   var primitives = new THREE.Group();
   var geos = [
-    new THREE.IcosahedronGeometry(0.6, 0),
-    new THREE.OctahedronGeometry(0.5, 0),
-    new THREE.TorusKnotGeometry(0.4, 0.15, 64, 8),
+    new THREE.IcosahedronGeometry(0.5, 0),
+    new THREE.OctahedronGeometry(0.4, 0),
   ];
 
   geos.forEach(function (geo, i) {
-    var angle = (i / 3) * Math.PI * 2;
-    var radius = 2.5 + Math.random() * 1.5;
+    var angle = (i / 2) * Math.PI * 2;
+    var radius = 2.5 + Math.random() * 1;
     var color = i % 2 === 0 ? COLORS.violet : COLORS.cyan;
     var mat = new THREE.MeshPhysicalMaterial({
       color: color,
       emissive: color,
-      emissiveIntensity: 0.15,
-      metalness: 0.3,
-      roughness: 0.4,
+      emissiveIntensity: 0.1,
+      metalness: 0.2,
+      roughness: 0.5,
       transparent: true,
-      opacity: 0.3,
-      wireframe: i === 2,
+      opacity: 0.2,
     });
     var mesh = new THREE.Mesh(geo, mat);
     mesh.position.set(
       Math.cos(angle) * radius,
-      (Math.random() - 0.5) * 4,
-      Math.sin(angle) * radius - 3
+      (Math.random() - 0.5) * 3,
+      Math.sin(angle) * radius - 2
     );
     mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
     mesh.userData = {
-      speed: 0.2 + Math.random() * 0.3,
+      speed: 0.1 + Math.random() * 0.2,
       rotSpeed: new THREE.Vector3(
-        (Math.random() - 0.5) * 0.01,
-        (Math.random() - 0.5) * 0.01,
-        (Math.random() - 0.5) * 0.01
+        (Math.random() - 0.5) * 0.005,
+        (Math.random() - 0.5) * 0.005,
+        (Math.random() - 0.5) * 0.005
       ),
       floatOffset: Math.random() * Math.PI * 2,
-      floatSpeed: 0.3 + Math.random() * 0.3,
-      floatAmp: 0.3 + Math.random() * 0.3,
+      floatSpeed: 0.2 + Math.random() * 0.2,
+      floatAmp: 0.2 + Math.random() * 0.2,
       baseY: mesh.position.y,
     };
     primitives.add(mesh);
@@ -203,9 +215,9 @@ document.querySelectorAll(".header ul a").forEach(function (elem) {
 
   var isMobile = window.innerWidth < 768;
   if (isMobile) {
-    particleMat.opacity = 0.15;
+    particleMat.opacity = 0.08;
     primitives.children.forEach(function (child) {
-      child.material.opacity = 0.1;
+      child.material.opacity = 0.06;
     });
   }
 
@@ -236,14 +248,14 @@ document.querySelectorAll(".header ul a").forEach(function (elem) {
     requestAnimationFrame(animate);
     var elapsed = clock.getElapsedTime();
 
-    target.x += (mouse.x * 0.3 - target.x) * 0.02;
-    target.y += (-mouse.y * 0.2 - target.y) * 0.02;
+    target.x += (mouse.x * 0.2 - target.x) * 0.01;
+    target.y += (-mouse.y * 0.15 - target.y) * 0.01;
 
-    particles.rotation.x = target.y * 0.3 + scrollProgress * 0.5;
-    particles.rotation.y = target.x * 0.3 + scrollProgress * 0.5;
+    particles.rotation.x = target.y * 0.2 + scrollProgress * 0.3;
+    particles.rotation.y = target.x * 0.2 + scrollProgress * 0.3;
 
-    primitives.position.x = target.x * 0.2;
-    primitives.position.y = target.y * 0.2;
+    primitives.position.x = target.x * 0.15;
+    primitives.position.y = target.y * 0.15;
 
     primitives.children.forEach(function (child) {
       var data = child.userData;
@@ -255,10 +267,10 @@ document.querySelectorAll(".header ul a").forEach(function (elem) {
         Math.sin(elapsed * data.floatSpeed + data.floatOffset) * data.floatAmp;
     });
 
-    var opacity = 0.2 + scrollProgress * 0.3;
+    var opacity = 0.15 + scrollProgress * 0.2;
     particleMat.opacity = isMobile
-      ? 0.15
-      : Math.min(opacity, 0.5);
+      ? 0.1
+      : Math.min(opacity, 0.35);
 
     renderer.render(scene, camera);
   }
@@ -330,34 +342,34 @@ document.querySelectorAll(".header ul a").forEach(function (elem) {
   window.addEventListener("scroll", checkActive);
 
   var texCount = imageUrls.length;
-  for (var i = 0; i < 20; i++) {
+  for (var i = 0; i < 12; i++) {
     (function (idx) {
-      var scale = [0.7, 1, 0.8, 1, 1][Math.floor(Math.random() * 5)];
+      var scale = [0.7, 0.9, 0.8][Math.floor(Math.random() * 3)];
       var texIdx = Math.floor(Math.random() * texCount);
       var texture = textureLoader.load(imageUrls[texIdx]);
       var mat = new THREE.MeshPhysicalMaterial({
         map: texture,
         emissive: "#ffffff",
         emissiveMap: texture,
-        emissiveIntensity: 0.3,
-        metalness: 0.5,
-        roughness: 1,
+        emissiveIntensity: 0.15,
+        metalness: 0.3,
+        roughness: 0.9,
         clearcoat: 0.1,
       });
       var mesh = new THREE.Mesh(sphereGeo, mat);
       mesh.scale.setScalar(scale);
       mesh.position.set(
-        (Math.random() - 0.5) * 40,
-        (Math.random() - 0.5) * 40 - 25,
-        (Math.random() - 0.5) * 40 - 10
+        (Math.random() - 0.5) * 30,
+        (Math.random() - 0.5) * 30 - 15,
+        (Math.random() - 0.5) * 30 - 8
       );
       mesh.rotation.set(0.3, 1, 1);
       mesh.userData = {
         scale: scale,
         velocity: new THREE.Vector3(
-          (Math.random() - 0.5) * 0.5,
-          (Math.random() - 0.5) * 0.5,
-          (Math.random() - 0.5) * 0.5
+          (Math.random() - 0.5) * 0.3,
+          (Math.random() - 0.5) * 0.3,
+          (Math.random() - 0.5) * 0.3
         ),
         basePos: mesh.position.clone(),
       };
@@ -392,17 +404,17 @@ document.querySelectorAll(".header ul a").forEach(function (elem) {
           .multiplyScalar(-50 * delta * sphere.userData.scale);
 
         var force = new THREE.Vector3(
-          (pointerTarget.x - pos.x) * 0.001,
-          (pointerTarget.y - pos.y) * 0.001,
-          -pos.z * 0.001
+          (pointerTarget.x - pos.x) * 0.0006,
+          (pointerTarget.y - pos.y) * 0.0006,
+          -pos.z * 0.0006
         );
 
         sphere.userData.velocity.add(force);
-        sphere.userData.velocity.multiplyScalar(0.95);
+        sphere.userData.velocity.multiplyScalar(0.97);
         pos.add(sphere.userData.velocity);
       });
 
-      sphereGroup.rotation.y += delta * 0.1;
+      sphereGroup.rotation.y += delta * 0.06;
     }
 
     renderer.render(scene, camera);
@@ -423,34 +435,42 @@ document.querySelectorAll(".header ul a").forEach(function (elem) {
 // ═══════════════════════════════════════════════════════
 (function initCursor() {
   var cursor = document.getElementById("cursorMain");
+  if (!cursor) return;
   var mousePos = { x: 0, y: 0 };
   var cursorPos = { x: 0, y: 0 };
   var hover = false;
+  var rafId = null;
 
   document.addEventListener("mousemove", function (e) {
     mousePos.x = e.clientX;
     mousePos.y = e.clientY;
+    if (!cursor.classList.contains("visible")) {
+      cursor.classList.add("visible");
+    }
+  });
+
+  document.addEventListener("mouseleave", function () {
+    cursor.classList.remove("visible");
   });
 
   function loop() {
-    requestAnimationFrame(loop);
+    rafId = requestAnimationFrame(loop);
     if (!hover) {
-      var delay = 6;
+      var delay = 8;
       cursorPos.x += (mousePos.x - cursorPos.x) / delay;
       cursorPos.y += (mousePos.y - cursorPos.y) / delay;
-      gsap.to(cursor, { x: cursorPos.x, y: cursorPos.y, duration: 0.1 });
+      cursor.style.transform = "translate(" + cursorPos.x + "px, " + cursorPos.y + "px)";
     }
   }
   loop();
 
   document.querySelectorAll("[data-cursor]").forEach(function (item) {
-    item.addEventListener("mouseover", function (e) {
+    item.addEventListener("mouseenter", function (e) {
       var target = e.currentTarget;
       var rect = target.getBoundingClientRect();
 
       if (target.dataset.cursor === "icons") {
         cursor.classList.add("cursor-icons");
-        gsap.to(cursor, { x: rect.left, y: rect.top, duration: 0.1 });
         cursor.style.setProperty("--cursorH", rect.height + "px");
         hover = true;
       }
@@ -458,7 +478,7 @@ document.querySelectorAll(".header ul a").forEach(function (elem) {
         cursor.classList.add("cursor-disable");
       }
     });
-    item.addEventListener("mouseout", function () {
+    item.addEventListener("mouseleave", function () {
       cursor.classList.remove("cursor-disable", "cursor-icons");
       hover = false;
     });
@@ -539,13 +559,13 @@ function initLandingAnimations() {
   gsap.fromTo(
     [".header", ".icons-section", ".nav-fade"],
     { opacity: 0 },
-    { opacity: 1, duration: 1.2, ease: "power1.inOut", delay: 0.1 }
+    { opacity: 1, duration: 1, ease: "power2.inOut", delay: 0.2 }
   );
 
   gsap.fromTo(
     ".landing-info-h2",
-    { opacity: 0, y: 30 },
-    { opacity: 1, y: 0, duration: 1.2, ease: "power1.inOut", delay: 0.8 }
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, duration: 1, ease: "power2.out", delay: 0.6 }
   );
 
   function splitText(selector) {
@@ -571,15 +591,15 @@ function initLandingAnimations() {
 
   gsap.fromTo(
     allLandingChars,
-    { opacity: 0, y: 80, filter: "blur(5px)" },
+    { opacity: 0, y: 40, filter: "blur(3px)" },
     {
       opacity: 1,
       y: 0,
       filter: "blur(0px)",
-      duration: 1.2,
-      ease: "power3.inOut",
-      stagger: 0.025,
-      delay: 0.3,
+      duration: 1,
+      ease: "power3.out",
+      stagger: 0.02,
+      delay: 0.2,
     }
   );
 
@@ -590,32 +610,20 @@ function initLandingAnimations() {
   var text4Chars = splitText(".landing-h2-2");
 
   function loopText(upChars, downChars) {
-    var tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
-    var delay = 4;
-    var delay2 = delay * 2 + 1;
+    var tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
+    var delay = 5;
 
     tl.fromTo(
       downChars,
-      { opacity: 0, y: 80 },
-      { opacity: 1, y: 0, duration: 1.2, ease: "power3.inOut", stagger: 0.1, delay: delay },
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 1, ease: "power2.out", stagger: 0.05, delay: delay },
       0
     )
       .fromTo(
         upChars,
-        { y: 80 },
-        { y: 0, duration: 1.2, ease: "power3.inOut", stagger: 0.1, delay: delay2 },
-        1
-      )
-      .fromTo(
-        upChars,
-        { y: 0 },
-        { y: -80, duration: 1.2, ease: "power3.inOut", stagger: 0.1, delay: delay },
+        { opacity: 1, y: 0 },
+        { opacity: 0, y: -40, duration: 0.8, ease: "power2.in", stagger: 0.05, delay: delay },
         0
-      )
-      .to(
-        downChars,
-        { y: -80, duration: 1.2, ease: "power3.inOut", stagger: 0.1, delay: delay2 },
-        1
       );
   }
 
@@ -684,9 +692,9 @@ function initScrollAnimations() {
   });
   careerTl
     .fromTo(".career-timeline", { maxHeight: "10%" }, { maxHeight: "100%", duration: 0.5 }, 0)
-    .fromTo(".career-timeline", { opacity: 0 }, { opacity: 1, duration: 0.1 }, 0)
-    .fromTo(".career-info-box", { opacity: 0 }, { opacity: 1, stagger: 0.1, duration: 0.5 }, 0)
-    .fromTo(".career-dot", { animationIterationCount: "infinite" }, { animationIterationCount: "1", delay: 0.3, duration: 0.1 }, 0);
+    .fromTo(".career-timeline", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0)
+    .fromTo(".career-info-box", { opacity: 0, y: 20 }, { opacity: 1, y: 0, stagger: 0.1, duration: 0.4, ease: "power2.out" }, 0.1)
+    .fromTo(".career-dot", { animationIterationCount: "infinite" }, { animationIterationCount: "1", delay: 0.3, duration: 0.1 }, 0.2);
 
   if (window.innerWidth > 1024) {
     careerTl.fromTo(".career-section", { y: 0 }, { y: "20%", duration: 0.5, delay: 0.2 }, 0);
@@ -704,13 +712,13 @@ function initScrollAnimations() {
     if (!el) return;
     gsap.fromTo(
       el,
-      { opacity: 0, y: 40, filter: "blur(4px)" },
+      { opacity: 0, y: 30, filter: "blur(3px)" },
       {
         opacity: 1,
         y: 0,
         filter: "blur(0px)",
         duration: 0.8,
-        ease: "power3.out",
+        ease: "power2.out",
         scrollTrigger: {
           trigger: item.trigger,
           start: item.start,
@@ -725,13 +733,13 @@ function initScrollAnimations() {
   if (careerBoxes.length) {
     gsap.fromTo(
       careerBoxes,
-      { opacity: 0, y: 30 },
+      { opacity: 0, y: 20 },
       {
         opacity: 1,
         y: 0,
         duration: 0.5,
-        stagger: 0.15,
-        ease: "back.out(0.8)",
+        stagger: 0.12,
+        ease: "power2.out",
         scrollTrigger: {
           trigger: ".career-info",
           start: "top 80%",
@@ -746,13 +754,13 @@ function initScrollAnimations() {
   if (workBoxes.length) {
     gsap.fromTo(
       workBoxes,
-      { opacity: 0, x: -40 },
+      { opacity: 0, x: -30 },
       {
         opacity: 1,
         x: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "power3.out",
+        duration: 0.5,
+        stagger: 0.08,
+        ease: "power2.out",
         scrollTrigger: {
           trigger: ".work-flex",
           start: "top 80%",
@@ -801,13 +809,13 @@ function initScrollAnimations() {
   if (tags.length) {
     gsap.fromTo(
       tags,
-      { opacity: 0, scale: 0.8 },
+      { opacity: 0, scale: 0.9 },
       {
         opacity: 1,
         scale: 1,
         duration: 0.3,
-        stagger: 0.02,
-        ease: "back.out(1.5)",
+        stagger: 0.015,
+        ease: "power2.out",
         scrollTrigger: {
           trigger: ".what-content-flex",
           start: "top 85%",
@@ -834,7 +842,7 @@ function initScrollAnimations() {
 
       gsap.fromTo(
         wordSpans,
-        { autoAlpha: 0, y: 80 },
+        { autoAlpha: 0, y: 40 },
         {
           autoAlpha: 1,
           scrollTrigger: {
@@ -842,10 +850,10 @@ function initScrollAnimations() {
             toggleActions: "play pause resume reverse",
             start: "20% 60%",
           },
-          duration: 1,
-          ease: "power3.out",
+          duration: 0.8,
+          ease: "power2.out",
           y: 0,
-          stagger: 0.02,
+          stagger: 0.015,
         }
       );
     });
@@ -864,7 +872,7 @@ function initScrollAnimations() {
 
       gsap.fromTo(
         chars,
-        { autoAlpha: 0, y: 80, rotate: 10 },
+        { autoAlpha: 0, y: 30 },
         {
           autoAlpha: 1,
           scrollTrigger: {
@@ -872,11 +880,10 @@ function initScrollAnimations() {
             toggleActions: "play pause resume reverse",
             start: "20% 60%",
           },
-          duration: 0.8,
-          ease: "power2.inOut",
+          duration: 0.6,
+          ease: "power2.out",
           y: 0,
-          rotate: 0,
-          stagger: 0.03,
+          stagger: 0.02,
         }
       );
     });

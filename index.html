@@ -10,7 +10,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div id="ambient-scene"></div>
@@ -18,35 +18,40 @@
   <div id="grain-overlay"></div>
 
   <div id="loading-screen">
-    <div class="loading-header">
-      <a href="#" class="loader-title">Gia Khang</a>
-      <div class="loaderGame" id="loaderGame">
-        <div class="loaderGame-container">
-          <div class="loaderGame-in" id="loaderGameIn"></div>
-          <div class="loaderGame-ball"></div>
+    <div class="loading-split">
+      <!-- LEFT: Globe shows through transparent panel -->
+      <div class="loading-left"></div>
+      <!-- RIGHT: Japanese typography -->
+      <div class="loading-right">
+        <div class="loaderGame" id="loaderGame">
+          <div class="loaderGame-container">
+            <div class="loaderGame-in" id="loaderGameIn"></div>
+            <div class="loaderGame-ball"></div>
+          </div>
         </div>
+        <div class="jp-loading-content">
+          <div class="jp-text-container">
+            <div class="jp-main">読み込み中...</div>
+            <div class="jp-sub">システムを起動する</div>
+          </div>
+          <div class="jp-loader">
+            <div class="jp-loader-bar"></div>
+            <div class="jp-loader-percent" id="jpLoadPercent">0%</div>
+          </div>
+        </div>
+        <div class="jp-vertical-text">機・械・の・下・の・機・械</div>
       </div>
     </div>
-    <div class="loading-screen-inner">
-      <div class="loading-marquee">
-        <div class="marquee-track" id="marqueeTrack">
-          <span>Software Engineer</span>
-          <span>Systems Architect</span>
-          <span>Software Engineer</span>
-          <span>Systems Architect</span>
-        </div>
-      </div>
-      <div class="loading-wrap" id="loadingWrap">
-        <div class="loading-hover"></div>
-        <div class="loading-button" id="loadingButton">
-          <div class="loading-container">
-            <div class="loading-content">
-              <div class="loading-content-in">Loading <span id="loadPercent">0%</span></div>
-            </div>
-            <div class="loading-box"></div>
+    <div class="loading-wrap" id="loadingWrap">
+      <div class="loading-hover"></div>
+      <div class="loading-button" id="loadingButton">
+        <div class="loading-container">
+          <div class="loading-content">
+            <div class="loading-content-in">Loading <span id="loadPercent">0%</span></div>
           </div>
-          <div class="loading-content2"><span>Welcome</span></div>
+          <div class="loading-box"></div>
         </div>
+        <div class="loading-content2"><span>ようこそ</span></div>
       </div>
     </div>
   </div>
@@ -265,13 +270,17 @@
 <script type="importmap">
   {
     "imports": {
-      "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+      "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
     }
   }
 </script>
 
 <script type="module">
   import * as THREE from 'three';
+  import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+  import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+  import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
   const container = document.createElement('div');
   container.style.position = 'fixed';
@@ -305,7 +314,7 @@
   container.appendChild(renderer.domElement);
 
   // ─── Globe ───
-  const globeRadius = isMobile ? 1.2 : 1.6;
+  const globeRadius = isMobile ? 0.8 : 1.1;
   const globeGeo = new THREE.SphereGeometry(globeRadius, 64, 64);
   const texLoader = new THREE.TextureLoader();
   const earthMap = texLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
@@ -313,18 +322,19 @@
 
   const globeMat = new THREE.MeshPhysicalMaterial({
     map: earthMap,
-    roughness: 0.35,
-    metalness: 0.08,
-    clearcoat: 0.2,
+    roughness: 0.55,
+    metalness: 0.0,
+    clearcoat: 0.05,
     clearcoatRoughness: 0.25,
-    envMapIntensity: 0.8,
+    envMapIntensity: 0.25,
   });
   const globe = new THREE.Mesh(globeGeo, globeMat);
 
   // Position globe to the right side
   const globeOffsetX = isMobile ? 0 : 2.0;
   const globeOffsetY = isMobile ? -0.3 : -0.2;
-  globe.position.set(globeOffsetX, globeOffsetY, 0);
+  const globeOffsetZ = isMobile ? -0.6 : -1.0;
+  globe.position.set(globeOffsetX, globeOffsetY, globeOffsetZ);
   scene.add(globe);
 
   // ─── Cloud layer ───
@@ -360,9 +370,9 @@
       void main() {
         vec3 viewDir = normalize(-vPosition);
         float rim = 1.0 - max(0.0, dot(viewDir, vNormal));
-        rim = pow(rim, 2.5);
-        vec3 color = mix(vec3(0.4, 0.5, 1.0), vec3(0.6, 0.35, 1.0), rim);
-        gl_FragColor = vec4(color, rim * 0.3);
+        rim = pow(rim, 3.0);
+        vec3 color = mix(vec3(0.3, 0.35, 0.8), vec3(0.5, 0.25, 0.8), rim);
+        gl_FragColor = vec4(color, rim * 0.12);
       }
     `,
     transparent: true,
@@ -428,24 +438,37 @@
   scene.add(ring2);
 
   // ─── Lighting ───
-  const ambient = new THREE.AmbientLight(0x222244, 0.4);
+  const ambient = new THREE.AmbientLight(0x222244, 0.25);
   scene.add(ambient);
 
-  const keyLight = new THREE.DirectionalLight(0xffeedd, 1.8);
+  const keyLight = new THREE.DirectionalLight(0xffeedd, 0.8);
   keyLight.position.set(5, 8, 6);
   scene.add(keyLight);
 
-  const rimLight = new THREE.DirectionalLight(0x6C47FF, 1.2);
+  const rimLight = new THREE.DirectionalLight(0x6C47FF, 0.5);
   rimLight.position.set(-4, 2, -5);
   scene.add(rimLight);
 
-  const coolRim = new THREE.DirectionalLight(0x00C9FF, 0.6);
+  const coolRim = new THREE.DirectionalLight(0x00C9FF, 0.3);
   coolRim.position.set(0, -3, -6);
   scene.add(coolRim);
 
-  const fillLight = new THREE.DirectionalLight(0x4466aa, 0.3);
+  const fillLight = new THREE.DirectionalLight(0x4466aa, 0.15);
   fillLight.position.set(-3, 0, 4);
   scene.add(fillLight);
+
+  // ─── Post-processing: subtle bloom for cinematic softness ───
+  const composer = new EffectComposer(renderer);
+  composer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  composer.addPass(new RenderPass(scene, camera));
+
+  const bloomPass = new UnrealBloomPass(
+    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    0.15,
+    0.5,
+    0.1
+  );
+  composer.addPass(bloomPass);
 
   // ─── Mouse parallax vars ───
   let mouseX = 0;
@@ -472,7 +495,7 @@
   });
 
   // ─── Fog ───
-  scene.fog = new THREE.FogExp2(0x0A0C10, 0.008);
+  scene.fog = new THREE.FogExp2(0x0A0C10, 0.004);
 
   // ─── Animate ───
   function animate() {
@@ -491,7 +514,7 @@
     ring2.rotation.z -= 0.0003;
     stars.rotation.y += 0.0002;
 
-    renderer.render(scene, camera);
+    composer.render();
   }
   animate();
 
@@ -537,19 +560,21 @@
     const fov = mob ? 50 : 40;
     const gx = mob ? 0 : 2.0;
     const gy = mob ? -0.3 : -0.2;
-    const gr = mob ? 1.2 : 1.6;
+    const gz = mob ? -0.6 : -1.0;
+    const gr = mob ? 0.8 : 1.1;
 
     camera.fov = fov;
     camera.position.z = camZ;
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    composer.setSize(window.innerWidth, window.innerHeight);
 
-    globe.position.set(gx, gy, 0);
-    clouds.position.set(gx, gy, 0);
-    glow.position.set(gx, gy, 0);
-    ring.position.set(gx, gy, 0);
-    ring2.position.set(gx, gy, 0);
+    globe.position.set(gx, gy, gz);
+    clouds.position.set(gx, gy, gz);
+    glow.position.set(gx, gy, gz);
+    ring.position.set(gx, gy, gz);
+    ring2.position.set(gx, gy, gz);
 
     if (Math.abs(globeGeo.parameters.radius - gr) > 0.01) {
       oldGlobeGeo = globe.geometry;

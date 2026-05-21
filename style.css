@@ -1375,51 +1375,156 @@ a.contact-social:hover {
   position: fixed;
   width: 100vw;
   height: var(--vh);
-  background-color: #eae5ec;
+  background: #050508;
   z-index: 999999999;
+  color: #fff;
+}
+
+.loading-split {
   display: flex;
-  place-items: center;
-  justify-content: center;
-  color: #000;
-}
-
-.loading-header {
-  width: var(--cWidth);
-  max-width: var(--cMaxWidth);
-  position: fixed;
-  z-index: 9999999999;
-  display: flex;
-  justify-content: space-between;
-  box-sizing: border-box;
-  padding: 20px 0px;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 0;
-  color: var(--backgroundColor);
-}
-
-.loader-title {
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.2px;
-}
-
-@media only screen and (min-width: 500px) {
-  .loading-header { padding: 20px 0px; }
-  .loader-title { font-size: 16px; }
-}
-@media only screen and (min-width: 1200px) {
-  .loading-header { padding: 35px 0px; }
-  .loader-title { font-size: 18px; }
-}
-
-.loading-screen-inner {
-  display: flex;
-  place-items: center;
-  justify-content: center;
-  height: 100%;
   width: 100%;
+  height: 100%;
+}
+
+.loading-left {
+  flex: 1;
   position: relative;
+  background: transparent;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.loading-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0a0c10 0%, #0d0f14 100%);
+  position: relative;
+}
+
+/* ── Japanese Typography ── */
+.jp-loading-content {
+  text-align: center;
+  position: relative;
+  padding: 2rem;
+}
+
+.jp-text-container {
+  margin-bottom: 3rem;
+}
+
+.jp-main {
+  font-family: "Noto Sans JP", "Zen Kaku Gothic New", "BIZ UDGothic",
+    "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  background: linear-gradient(135deg, #ffffff 0%, #7C5CFF 80%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: jpFadeInUp 0.8s ease forwards;
+  animation-delay: 0.2s;
+}
+
+.jp-sub {
+  font-family: "Noto Sans JP", "Zen Kaku Gothic New", "BIZ UDGothic",
+    "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.2em;
+  opacity: 0;
+  animation: jpFadeInUp 0.8s ease forwards;
+  animation-delay: 0.4s;
+}
+
+.jp-loader {
+  width: 280px;
+  max-width: 80%;
+  margin: 2rem auto;
+}
+
+.jp-loader-bar {
+  height: 2px;
+  background: rgba(124, 92, 255, 0.3);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.jp-loader-bar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #7C5CFF, #5FA8FF);
+  border-radius: 2px;
+  transition: width 0.1s linear;
+  width: var(--pct, 0%);
+}
+
+.jp-loader-percent {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  text-align: right;
+  margin-top: 0.5rem;
+  color: #7C5CFF;
+  letter-spacing: 1px;
+}
+
+.jp-vertical-text {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: "Noto Sans JP", "Zen Kaku Gothic New", "BIZ UDGothic",
+    "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.15);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+@keyframes jpFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .loading-split {
+    flex-direction: column;
+  }
+  .loading-left {
+    min-height: 40vh;
+  }
+  .loading-right {
+    min-height: 60vh;
+  }
+  .jp-vertical-text {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jp-main, .jp-sub {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 .loading-button {
@@ -1456,7 +1561,11 @@ a.contact-social:hover {
 .loading-wrap {
   --Lsize: 145px;
   padding: 6px;
-  position: relative;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
   min-width: 0px;
   min-height: 0px;
   border-radius: 100px;
@@ -1473,7 +1582,7 @@ a.contact-social:hover {
 .loading-clicked {
   transition-delay: 0ms;
   transition-timing-function: cubic-bezier(0.33, 0.11, 1, 0.72);
-  transform: scale(1);
+  transform: translate(-50%, -50%) scale(1);
   min-width: calc(100vw + 5000px);
   border-radius: 5000px;
   min-height: calc(100vh + 500px);
@@ -1582,58 +1691,21 @@ a.contact-social:hover {
 
 .loading-complete .loading-container { max-width: 0px; }
 
-.loading-marquee {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  transform: translateY(-50%);
-  color: var(--backgroundColor);
-  font-size: 60px;
-  font-weight: 600;
-  text-transform: uppercase;
-  overflow: hidden;
-}
-
-.marquee-track {
-  display: flex;
-  white-space: nowrap;
-  animation: marqueeScroll 15s linear infinite;
-}
-
-.marquee-track span {
-  padding: 0px 50px;
-  position: relative;
-}
-
-.marquee-track span::before {
-  content: "";
-  width: 20px;
-  height: 20px;
-  background-color: var(--backgroundColor);
-  position: absolute;
-  top: 50%;
-  border-radius: 50px;
-  left: 0px;
-  transform: translate(-50%, -50%);
-}
-
-@keyframes marqueeScroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
 .loaderGame {
+  position: absolute;
+  top: 2rem;
+  right: 3rem;
+  opacity: 0.6;
   transition: 0.3s;
+  z-index: 1;
 }
 
 .loaderGame-container {
   width: 200px;
-  transition: 0.3s;
   height: 100px;
   overflow: hidden;
   position: relative;
-  transform: scale(0.4);
+  transform: scale(0.35);
   transform-origin: top right;
 }
 
@@ -1659,7 +1731,7 @@ a.contact-social:hover {
   position: relative;
   width: 10px;
   height: 60px;
-  background-color: #000;
+  background-color: rgba(124, 92, 255, 0.3);
   display: block;
 }
 
@@ -1696,7 +1768,13 @@ a.contact-social:hover {
   .loading-wrap { --Lsize: 210px; }
   .loading-button { padding: 30px 70px; font-size: 25px; }
   .loading-container { left: 70px; }
-  .loading-marquee { font-size: 100px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jp-main, .jp-sub {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 #smooth-content {

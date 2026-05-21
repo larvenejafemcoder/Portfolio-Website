@@ -27,6 +27,14 @@ if (prefersReducedMotion) {
 var loadingWrap = document.getElementById("loadingWrap");
 var loadingButton = document.getElementById("loadingButton");
 var loadPercent = document.getElementById("loadPercent");
+var jpLoadPercent = document.getElementById("jpLoadPercent");
+var jpLoaderBar = document.querySelector(".jp-loader-bar");
+
+function updatePercentUI(val) {
+  if (loadPercent) loadPercent.textContent = val + "%";
+  if (jpLoadPercent) jpLoadPercent.textContent = val + "%";
+  if (jpLoaderBar) jpLoaderBar.style.setProperty("--pct", val + "%");
+}
 
 var loadState = { percent: 0 };
 var interval = setInterval(function () {
@@ -36,11 +44,13 @@ var interval = setInterval(function () {
     clearInterval(interval);
     interval = setInterval(function () {
       loadState.percent += Math.round(Math.random());
+      updatePercentUI(loadState.percent);
       if (loadState.percent > 91) {
         clearInterval(interval);
       }
     }, 2000);
   }
+  updatePercentUI(loadState.percent);
 }, 100);
 
 function finishLoading() {
@@ -49,6 +59,7 @@ function finishLoading() {
     var fastInterval = setInterval(function () {
       if (loadState.percent < 100) {
         loadState.percent++;
+        updatePercentUI(loadState.percent);
       } else {
         clearInterval(fastInterval);
         resolve();
